@@ -1,0 +1,20 @@
+html {
+    font-family: "Helvetica","Times New Roman", Times, Serif;
+    background: white;
+}
+
+body {
+    background: blanchedalmond;
+    max-width: 900px;
+    margin: 0 auto;
+
+}
+
+#header {
+    background: cadetblue;
+}
+
+#main {
+    border: 5px solid lightcoral;
+    padding-left: 3em;
+}

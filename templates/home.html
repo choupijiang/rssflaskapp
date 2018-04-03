@@ -1,19 +1,25 @@
 <html>
 	<head>
-		<title>Headline</title>
+		<title>今日头条</title>
+        <link rel="stylesheet" type="text/css" href="../static/home.css">
 	</head>
 	<body>
-    	<h1>Headlines</h1>
-		<form>
-			<input type="text" name="cat" placeholder="search" />
-			<input type="submit"  value="search" />
-		</form>
-		{% for article in articles %}
-			<b><a href="{{article.link}}">{{article.title}}</a></b><br/>
-    		<i>{{article.published}}</i><br/>
-			{{article.summary | safe}} <br/>
-    		<br/>
-		{% endfor %}
+        <div id="header">
+            <h1>今日头条</h1>
+            <p><b>{{weather.city}}</b> {{weather.description}}|{{weather.temperature}}℃</p>
+        </div>
+        <div id="main">
+            <form>
+                <input type="text" name="cat" placeholder="search" />
+                <input type="submit"  value="search" />
+            </form>
+            {% for article in articles %}
+                <b><a href="{{article.link}}">{{article.title}}</a></b><br/>
+                <i>{{article.published}}</i><br/>
+                {{article.summary | safe}} <br/>
+                <br/>
+            {% endfor %}
+        </div>
 	</body>
 </html>
 
