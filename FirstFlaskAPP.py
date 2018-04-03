@@ -67,9 +67,9 @@ RSS_FEEDS = {"people": "http://www.people.com.cn/rss/politics.xml",
 #     return render_template("home.html", articles=articles)
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def get_news():
-    query = request.args.get("cat")
+    query = request.form.get("cat")
     if not query or query.lower() not in RSS_FEEDS:
         cat = "people"
     else:
