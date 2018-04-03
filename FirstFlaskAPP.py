@@ -1,5 +1,7 @@
 from flask import Flask
 import feedparser
+from flask import render_template
+from flask import request
 
 
 app = Flask(__name__)
@@ -24,20 +26,57 @@ RSS_FEEDS = {"people": "http://www.people.com.cn/rss/politics.xml",
 #     return get_news("finance")
 
 
+# @app.route("/")
+# @app.route("/<cat>")
+# def get_news(cat="people"):
+#     feed = feedparser.parse(RSS_FEEDS[cat])
+#     first_artical = feed["entries"][0]
+#     return """<html>
+#         <body>
+#             <h1>pepple</h1>
+#             <b>{0}</b><br>
+#             <i>{1}</i><br>
+#             <p>{2}</p><br>
+#         </body>
+#     </html>
+#     """.format(first_artical.get("title"), first_artical.get("published"), first_artical.get("summary"))
+
+# @app.route("/")
+# @app.route("/<cat>")
+# def get_news(cat="people"):
+#     feed = feedparser.parse(RSS_FEEDS[cat])
+#     first_artical = feed["entries"][0]
+#     return render_template("home.html",
+#                 title=first_artical.get("title"),
+#                 published=first_artical.get("published"),
+#                 summary=first_artical.get("summary")
+#             )
+
+# @app.route("/")
+# @app.route("/<cat>")
+# def get_news(cat="people"):
+#     feed = feedparser.parse(RSS_FEEDS[cat])
+#     first_artical = feed["entries"][0]
+#     return render_template("home.html", article=first_artical)
+   
+# @app.route("/")
+# @app.route("/<string:cat>/")
+# def get_news(cat="people"):
+#     feed = feedparser.parse(RSS_FEEDS[cat])
+#     articles = feed["entries"]
+#     return render_template("home.html", articles=articles)
+
+
 @app.route("/")
-@app.route("/<cat>")
-def get_news(cat="people"):
+def get_news():
+    query = request.args.get("cat")
+    if not query or query.lower() not in RSS_FEEDS:
+        cat = "people"
+    else:
+        cat = query.lower()
     feed = feedparser.parse(RSS_FEEDS[cat])
-    first_artical = feed["entries"][0]
-    return """<html>
-        <body>
-            <h1>人民网</h1>
-            <b>{0}</b><br>
-            <i>{1}</i><br>
-            <p>{2}</p><br>
-        </body>
-    </html>
-    """.format(first_artical.get("title"), first_artical.get("published"), first_artical.get("summary"))
+    return render_template("home.html", articles=feed["entries"])
+        
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=8088, debug=True)
