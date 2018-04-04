@@ -1,12 +1,13 @@
 from flask import Flask
-import feedparser
 from flask import render_template
 from flask import request
+from flask import make_response
+import feedparser
 import urllib
 import json
 import string
 import ssl
-
+import datetime
 
 app = Flask(__name__)
 
@@ -20,16 +21,20 @@ RSS_FEEDS = {"people": "http://www.people.com.cn/rss/politics.xml",
 def home():
     cat = request.args.get("cat")
     if not cat:
-        cat = "people"
+        cat = request.cookies.get("cat")
+        if not cat:
+            cat = "finance"
     articles = get_news(cat)
 
     context=urllib.request.urlopen( 'http://pv.sohu.com/cityjson').read()
     city=context.decode("gb2312").split("=")[1].split(",")[2].split('"')[3]
     if not city:
-
         city = "北京"
     weather = get_weather(city)
-    return render_template("home.html", articles=articles, weather=weather)
+    response = make_response(render_template("home.html", articles=articles, weather=weather))
+    expires = datetime.datetime.now() + datetime.timedelta(days = 1)
+    response.set_cookie("cat", cat, expires=expires)
+    return response
 
 
 def get_news(query):
@@ -53,4 +58,4 @@ def get_weather(city):
     return weather
 
 if __name__ == '__main__':
-    app.run(port=8088, debug=True)
+    app.run(port=8090, debug=True)

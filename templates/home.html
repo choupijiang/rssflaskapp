@@ -4,8 +4,17 @@
         <link rel="stylesheet" type="text/css" href="../static/home.css">
 	</head>
 	<body>
+        <div id="spacer">
+            <p class="clearFloat"></p>
+        </div>
         <div id="header">
-            <h1>今日头条</h1>
+
+            <div id="navbar">
+                <ul>
+                    <li><a href="/" >头条</a></li>
+                    <li><a href="JavaScript:void(0)" onclick="alert('hi')">地图</a> </li>
+                </ul>
+            </div>
             <p><b>{{weather.city}}</b> {{weather.description}}|{{weather.temperature}}℃</p>
         </div>
         <div id="main">
